@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "./Component/Navbar";
-import SearchBar from "./Component/SearchBar";
+// import SearchBar from "./Component/SearchBar";
 // import HeroSection from "./Component/heroSection";
 import Home from "./Pages/Home";
 import Activity from "./Pages/Activity";
@@ -11,11 +12,23 @@ import About from "./Pages/About";
 import Service from "./Pages/Service";
 import Blog from "./Pages/Blog";
 import Contact from "./Pages/Contact";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  return null;
+};
+
 function App() {
   return (
     <div>
-      <Router>
+      <BrowserRouter>
         <Navbar />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/activities" element={<Activity />} />
@@ -26,7 +39,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
 
       {/* <HeroSection /> 
       <div className="p-3">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 import FilterSidebar from "./FilterSidebar";
 import ActivitySearchbar from "./ActivitySearchbar";
@@ -34,14 +35,23 @@ const ActivityCard = ({ title, description, location, code, price, image }) => (
 );
 
 const Activity = () => {
-  const [activities, setActivities] = useState([]);
+    const [activities, setActivities] = useState([]);
+    const [ searchParams ] = useSearchParams();
+    const locationParam = searchParams?.get("location");
+    const dateParam = searchParams.get("date");
+    const guestsparam = searchParams.get("guests");
 
-  useEffect(() => {
-    axios
-      .get("https://activities-api-w8vb.onrender.com/api/activities")
-      .then((res) => setActivities(res.data))
-      .catch((err) => console.error("Error fetching activities:", err));
-  }, []);
+    console.log(locationParam, dateParam, guestsparam);
+
+    useEffect(() => {
+        if(locationParam){
+            axios
+            .get(`https://activities-api-w8vb.onrender.com/api/activities?location=${encodeURIComponent(locationParam)}`)
+            .then((res) => setActivities(res.data))
+            .catch((err) => console.error("Error fetching activities:", err));
+        }
+        console.log("component Re-rendered");
+    }, [locationParam, dateParam, guestsparam]);
 
   return (
     <div
@@ -60,8 +70,13 @@ const Activity = () => {
 
       <div className="flex-1">
         <div className="bg-[#f78a1f]">
-          <ActivitySearchbar />
+          <ActivitySearchbar 
+            location = {locationParam}
+            startDate = {dateParam}
+            guests = {guestsparam}
+          />
         </div>
+
         <div className="bg-gray-100/70 px-6 py-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {activities.map((item) => (

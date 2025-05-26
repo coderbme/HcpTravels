@@ -67,7 +67,11 @@ const Navbar = () => {
       <nav className="px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+           <Link
+            to="/"
+            className="hover:text-indigo-600 transition-colors duration-200">
           HCP Travels
+          </Link>
         </span>
 
         {/* Desktop Links */}
