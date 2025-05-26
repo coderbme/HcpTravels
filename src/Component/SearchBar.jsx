@@ -8,7 +8,7 @@ import {
   FaBus,
 } from "react-icons/fa";
 
-import Activity from "../Tabforms/ActivityForm";
+import Activity from "../Pages/ActivitySearchbar";
 import HotelForm from "../Tabforms/HotelForm";
 import FlightsForm from "../Tabforms/FlightForm";
 
