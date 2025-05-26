@@ -57,7 +57,7 @@ export default function TravelSearch() {
       </div>
 
       {/* Content Area */}
-      <div className="bg-black text-white p-4 rounded-b">
+      <div className="bg-black p-4 rounded-b">
         {(() => {
           const ComponentToRender = tabComponents[activeTab];
           return ComponentToRender ? (

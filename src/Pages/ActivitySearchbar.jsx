@@ -13,6 +13,32 @@ export default function ActivitySearchbar({ location: initialLocation, startDate
     const [guests, setGuests] = useState(initialGuests || 1);
     const navigate = useNavigate();
 
+    const [suggestions, setSuggestions] = useState([]);
+
+    const allLocations = [
+        "Delhi and NCR"
+    ];
+
+    const handleLocationChange = (e) => {
+        const value = e.target.value;
+        setLocation(value);
+
+        if(value.length > 0){
+            const filtered = allLocations.filter((loc) => 
+                loc.toLowerCase().includes(value.toLowerCase())
+            );
+            setSuggestions(filtered);
+        }
+        else {
+            setSuggestions([]);
+        }
+    };
+
+    const handleSuggestionClick = (suggestion) => {
+        setLocation(suggestion);
+        setSuggestions([]);     // hide suggestions
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Search:', { location, startDate, guests });
@@ -54,8 +80,23 @@ export default function ActivitySearchbar({ location: initialLocation, startDate
                     placeholder="I want to go..."
                     className="w-full pl-10 pr-4 py-3 rounded-md bg-transparent text-gray-900 placeholder:text-gray-600 outline-none"
                     value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    onChange={handleLocationChange}
                 />
+
+                {/* Suggestion List */}
+                {suggestions.length > 0 && (
+                    <ul className="absolute top-full left-0 right-0 bg-white border border-t-0 border-[#2A5286] z-10 max-h-48 overflow-y-auto rounded-b-md">
+                    {suggestions.map((suggestion, index) => (
+                        <li
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="px-4 py-2 cursor-pointer hover:bg-[#2A5286] hover:text-white transition-colors"
+                        >
+                        {suggestion}
+                        </li>
+                    ))}
+                    </ul>
+                )}
             </div>
 
             {/* Date */}

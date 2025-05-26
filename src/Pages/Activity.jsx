@@ -40,15 +40,19 @@ const Activity = () => {
     const locationParam = searchParams?.get("location");
     const dateParam = searchParams.get("date");
     const guestsparam = searchParams.get("guests");
+    const [loading, setLoading] = useState(false);
 
     console.log(locationParam, dateParam, guestsparam);
 
     useEffect(() => {
         if(locationParam){
+            setLoading(true);       // Start loading
+
             axios
             .get(`https://activities-api-w8vb.onrender.com/api/activities?location=${encodeURIComponent(locationParam)}`)
             .then((res) => setActivities(res.data))
-            .catch((err) => console.error("Error fetching activities:", err));
+            .catch((err) => console.error("Error fetching activities:", err))
+            .finally(() => setLoading(false));      // End loading
         }
         console.log("component Re-rendered");
     }, [locationParam, dateParam, guestsparam]);
@@ -79,9 +83,20 @@ const Activity = () => {
 
         <div className="bg-gray-100/70 px-6 py-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {activities.map((item) => (
-              <ActivityCard key={item._id} {...item} />
-            ))}
+            {loading ? (
+                <div className="text-center col-span-full py-10">
+                    <p className="text-lg font-semibold text-[#2A5286] animate-pulse">
+                    Please wait! We are busy searching the best deals for you...
+                    </p>
+                </div>
+                ) : activities.length > 0 ? (
+                    activities.map((item) => <ActivityCard key={item._id} {...item} />)
+                    ) : (
+                        <div className="text-center col-span-full py-10">
+                        <p className="text-gray-500">No activities found for this location.</p>
+                        </div>
+                        )
+            }
           </div>
         </div>
       </div>
